@@ -20,8 +20,8 @@ app.get('/index', function (req, res) {
     client.messages
     .create({
         body: text,
-        from: process.env.FROM_NUMBER,
-        to: process.env.TO_NUMBER
+        from: '',
+        to: ''
     })
     .then(message => console.log(message.sid))
     .done();
