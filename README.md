@@ -7,7 +7,7 @@ $ npm install
 
 To start the server:
 ```
-$ npm .
+$ node .
 ```
 
 I think that's how npm works at least, haven't tested that yet.
