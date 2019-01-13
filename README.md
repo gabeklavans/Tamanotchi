@@ -1,4 +1,4 @@
-# Tamanotchi ~WIP~
+# Tamanotchi *WIP*
 
 To install dependancies:
 ```
