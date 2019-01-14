@@ -33,6 +33,8 @@ function preload ()
     this.load.image('flush', 'assets/toilet.png');
     this.load.image('flushies', 'assets/flushies.png');
     this.load.image('poop', 'assets/poo.png');
+    this.load.image('pixel', 'assets/black.png');
+    this.load.image('gun', 'assets/gun.png');
     this.load.spritesheet('sprite', 'assets/mametchi sheet.png', {frameWidth: 64, frameHeight:65});
 }
 
@@ -48,12 +50,14 @@ function create ()
         .setDepth(2)
         .setDisplaySize(30,30)
     buttons.add(flush);
+    pixel = this.add.image(20,20, 'pixel').setDisplaySize(1,1).setDepth(2).setInteractive({useHandCursor: true});
 
     enableButtons();
 
     /* add base objects to scene */
     tama = this.physics.add.sprite(200, 200, 'sprite');
     poops = this.physics.add.group();
+    gun = this.add.image(1,1,'gun').setDisplaySize(40,30).setVisible(false);
 
     /* define event listeners */
 
@@ -85,6 +89,12 @@ function create ()
 
         //sendSMS();
     });
+    //be careful with that...
+    pixel.on('pointerdown', function() {
+        gun.setVisible(true);
+        console.log("u got a gun...");
+    });
+
 
     /* temp placement */
 
@@ -114,12 +124,16 @@ function update () {
         nextPoop = 5000
     } */
 
+    if(gun !== undefined) {
+        gun.setPosition(tama.x-28, tama.y-5);
+    }
+
     //debug
     progress.setText('Time (ms): ' + (currentTime.getTime() - gameStartTime.getTime()));
 }
 
 function sendSMS(term = "test data worked!") {
-    //term = document.getElementById("thing").value;
+    // term = document.getElementById("thing").value;
     var url = 'http://localhost:6969/index?term=' + term;
     // Now send a request to your Node program
     fetch(url).then(function(res) {
