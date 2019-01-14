@@ -1,5 +1,3 @@
-//import 'phaser';
-
 var config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
@@ -25,7 +23,7 @@ var game = new Phaser.Game(config);
 var nextPoop = 3000;
 
 var gameStartTime = new Date();
-var currentTime;
+var nextPoopTime = getNextPoopTime();
 
 function preload ()
 {
@@ -47,8 +45,8 @@ function create ()
     this.bg = this.add.image(200, 200, 'background').setDepth(1);
     buttons = this.add.group();
     flush = this.add.image(30,370, 'flush')
-        .setDepth(2)
-        .setDisplaySize(30,30)
+    .setDepth(2)
+    .setDisplaySize(30,30)
     buttons.add(flush);
     pixel = this.add.image(20,20, 'pixel').setDisplaySize(1,1).setDepth(2).setInteractive({useHandCursor: true});
 
@@ -80,7 +78,7 @@ function create ()
         disableButtons();
         tama.anims.pause();
         flushies = this.physics.add.sprite(28, 200, 'flushies')
-            .setCollideWorldBounds(true);
+        .setCollideWorldBounds(true);
         flushies.body.onWorldBounds = true;
         flushies.body.immovable = true;
         this.physics.add.collider(tama, flushies);
@@ -116,13 +114,12 @@ function create ()
 
 function update () {
     currentTime = new Date();
-    /*
-    if (currentTime.getTime() - gameStartTime.getTime() >= nextPoop) {
-        console.log(currentTime.getTime() - gameStartTime.getTime());
+    if (nextPoopTime.getTime() - currentTime.getTime() <= 0) {
+        //console.log(currentTime.getTime() - gameStartTime.getTime());
         let poop = this.physics.add.sprite(200, 200, 'poop').setRandomPosition(90, 90, 220, 220).setDisplaySize(50,50);
         poops.add(poop);
-        nextPoop = 5000
-    } */
+        nextPoopTime = getNextPoopTime();
+    }
 
     if(gun !== undefined) {
         gun.setPosition(tama.x-28, tama.y-5);
@@ -132,10 +129,10 @@ function update () {
     progress.setText('Time (ms): ' + (currentTime.getTime() - gameStartTime.getTime()));
 }
 
-function sendSMS(term = "test data worked!") {
-    // term = document.getElementById("thing").value;
-    var url = 'http://localhost:6969/index?term=' + term;
+function sendSMS(kind = "test data worked!") {
+    var url = 'http://localhost:6969/index?kind=' + kind;
     // Now send a request to your Node program
+    let text;
     fetch(url).then(function(res) {
         // Res will be a Response object.
         // Use res.text() or res.json() to get the information that the Node program sent.
@@ -150,7 +147,18 @@ function enableButtons() {
 }
 
 function disableButtons() {
-     Phaser.Actions.Call(buttons.getChildren(), function(button) {
-        button.disableInteractive();
-    }, this);
+   Phaser.Actions.Call(buttons.getChildren(), function(button) {
+    button.disableInteractive();
+}, this);
+}
+
+/**
+ * Returns a Date object of the new time
+ */
+ function getNextPoopTime() {
+    let date = moment();
+    let amount = Math.floor(Math.random() * 10);
+    console.log("Made next poop time " + amount + "s from now");
+    date.add(amount, 's');
+    return date.toDate();
 }
