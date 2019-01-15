@@ -1,10 +1,10 @@
-require('dotenv').config();
 var path = require('path');
 var favicon = require('serve-favicon');
-var moment = require('moment');
 var express = require('express');
 var app = express();
 var http = require('http');
+
+var routes = require('./routes');
 
 /**
  * Get port from environment and store in Express.
@@ -12,16 +12,20 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '6969');
 app.set('port', port);
 
+/**
+ * Serve the main webpage
+ */
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname,'index.html'));
+app.get("/", function(req, res, next) {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+app.use("/index", routes);
 
 /**
  * Set favicon
  */
-app.use(favicon(path.join(__dirname,'public','assets','favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'assets','favicon.ico')));
 
 /**
  * Normalize a port into a number, string, or false.
@@ -42,31 +46,7 @@ function normalizePort(val) {
   return false;
 }
 
-/**
- * GET request for handling Twilio SMS requests
- */
-app.get('/index', function (req, res) {
-    var kind = req.query.kind;
-    // This will run every time you send a request to localhost:6969/index
-    if (false) {
-    } else {
-        var text = 'YOU FLUSHED THE TOILET, also: ' + kind;
 
-        const accountSid = process.env.TWILIO_ACCOUNT_SID;
-        const authToken = process.env.TWILIO_AUTH_TOKEN;
-        const client = require('twilio')(accountSid, authToken);
-
-        client.messages
-        .create({
-            body: text,
-            from: process.env.FROM_NUMBER,
-            to: process.env.TO_NUMBER
-        })
-        .then(message => console.log(message.sid))
-        .done();
-        res.send("USER HAS BEEN NOTIFIED THAT THEY FLUSHED THE TOILET");
-    }
-})
 
 /**
  * Create HTTP server.
