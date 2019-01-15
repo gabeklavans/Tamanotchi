@@ -1,8 +1,9 @@
 require('dotenv').config();
+var path = require('path');
+var favicon = require('serve-favicon');
 var moment = require('moment');
 var express = require('express');
 var app = express();
-//var server = require('http').Server(app);
 var http = require('http');
 
 /**
@@ -11,11 +12,16 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '6969');
 app.set('port', port);
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(path.join(__dirname,'index.html'));
 });
+
+/**
+ * Set favicon
+ */
+app.use(favicon(path.join(__dirname,'public','assets','favicon.ico')));
 
 /**
  * Normalize a port into a number, string, or false.
