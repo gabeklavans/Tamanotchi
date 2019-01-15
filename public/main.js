@@ -158,7 +158,7 @@ function disableButtons() {
  function getNextPoopTime() {
     let date = moment();
     let amount = Math.floor(Math.random() * 10);
-    console.log("Made next poop time " + amount + "s from now");
-    date.add(amount, 's');
+    console.log("Made next poop time " + amount + "min from now");
+    date.add(amount, 'm');
     return date.toDate();
 }
