@@ -7,7 +7,7 @@ var body = document.getElementsByTagName("body")[0];
 body.appendChild(button);
 
 // 3. Add event handler
-button.addEventListener ("click", createTestData);
+button.addEventListener ("click", getTestData);
 
 function createTestData () {
     var testBody = {
@@ -28,6 +28,19 @@ function createTestData () {
     });
 }
 
+function getTestData() {
+    var num = '+14074084325';
+    fetch('http://localhost:6969/mongo/'+num, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }).then( function(res) {
+        return res.json(); 
+    }).then(initializeGame);
+}
+
 function talk() {
     fetch('http://localhost:6969/twilio?kind=uhuh').then(function (res) {
         // Res will be a Response object.
@@ -40,7 +53,7 @@ function talk() {
 }
 
 function initializeGame(data) {
-    console.log(sessionStorage.getItem('message'));
+    console.log(data.number);
     var config = {
         type: Phaser.AUTO,
         parent: 'phaser-example',

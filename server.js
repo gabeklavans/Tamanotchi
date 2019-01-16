@@ -45,7 +45,7 @@ app.use((req, res, next) => {
  */
 
 //serve the main app
-app.get("/", function(req, res, next) {
+app.get("/", function(req, res) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
