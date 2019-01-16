@@ -7,7 +7,26 @@ var body = document.getElementsByTagName("body")[0];
 body.appendChild(button);
 
 // 3. Add event handler
-button.addEventListener ("click", talk);
+button.addEventListener ("click", createTestData);
+
+function createTestData () {
+    var testBody = {
+        "number" : "+14074084325"
+    }
+
+    fetch('http://localhost:6969/mongo', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testBody)
+    }).then(function(res) {
+        res.text().then(function(text) {
+            console.log(text);
+        });
+    });
+}
 
 function talk() {
     fetch('http://localhost:6969/twilio?kind=uhuh').then(function (res) {

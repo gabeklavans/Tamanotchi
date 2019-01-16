@@ -3,21 +3,53 @@ var favicon = require('serve-favicon');
 var express = require('express');
 var app = express();
 var http = require('http');
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 var twilioRouter = require('./routes/twilio');
 var mongoRouter = require('./routes/mongo');
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+/**
+ * Set up MongoDB Atlas client
+ */
+mongoose.connect(
+  "mongodb+srv://the-mayor:" +
+  process.env.MONGO_ATLAS_PW +
+  "@tamanotchidb-6mz7m.gcp.mongodb.net/test?retryWrites=true",
+  { useNewUrlParser: true }
+);
+//mongoose.Promise = global.Promise;
+
+/**
+ * Some CORS voo-doo stuff
+ */
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
+
 /**
  * Routing for request handling
  */
-app.use(express.static(path.join(__dirname, 'public')));
 
 //serve the main app
 app.get("/", function(req, res, next) {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+//internal Request routers
 app.use("/twilio", twilioRouter);
 app.use("/mongo", mongoRouter);
 
@@ -37,6 +69,8 @@ app.use((error, req, res, next) => {
     }
   });
 });
+
+/* ~~~Server stuff~~~ */
 
 /**
  * Set favicon

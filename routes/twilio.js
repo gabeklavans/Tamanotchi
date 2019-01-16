@@ -5,7 +5,7 @@ const router = express.Router();
 /**
  * GET request for handling Twilio SMS requests
  */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     var kind = req.query.kind;
     // This will run every time you send a request to localhost:6969/index
     if (false) {
