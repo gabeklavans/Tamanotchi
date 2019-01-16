@@ -1,6 +1,6 @@
 {
   "name": "Tamanotchi",
-  "version": "0.3",
+  "version": "0.3.0",
   "description": "Tamagotchi clone with SMS capabilities",
   "main": "server.js",
   "scripts": {
@@ -18,9 +18,5 @@
     "path": "^0.12.7",
     "serve-favicon": "^2.5.0",
     "twilio": "^3.27.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gabeklavans/Tamanotchi.git"
   }
 }
