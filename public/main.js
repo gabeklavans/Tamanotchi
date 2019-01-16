@@ -1,6 +1,6 @@
 // 1. Create the button
 var button = document.createElement("button");
-button.innerHTML = "Do Something";
+button.innerHTML = "Retrieve my number from database";
 
 // 2. Append somewhere
 var body = document.getElementsByTagName("body")[0];
@@ -29,7 +29,7 @@ function createTestData () {
 }
 
 function getTestData() {
-    var num = '+14074084325';
+    var num = '5c3ef210005c3f570cc7ba56';
     fetch('http://localhost:6969/mongo/'+num, {
         method: 'GET',
         headers: {
@@ -38,7 +38,9 @@ function getTestData() {
         }
     }).then( function(res) {
         return res.json(); 
-    }).then(initializeGame);
+    }).then(doc => {
+        alert("JK it won't be THAT easy to get my digits ;) But here's the game save ID: " + doc._id);
+    });
 }
 
 function talk() {
@@ -52,8 +54,15 @@ function talk() {
     });
 }
 
+initializeGame();
+
 function initializeGame(data) {
-    console.log(data.number);
+    if(data === undefined)    
+    {    
+        blogURL = "DEFAULT";    
+    } 
+
+    console.log(data);
     var config = {
         type: Phaser.AUTO,
         parent: 'phaser-example',
