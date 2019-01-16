@@ -1,4 +1,8 @@
 var path = require('path');
+const debug = require('debug')('my-namespace');
+const name = 'my-app';
+debug('booting %s', name);
+
 var favicon = require('serve-favicon');
 var express = require('express');
 var app = express();
