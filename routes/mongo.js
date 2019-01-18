@@ -7,7 +7,7 @@ const GameSave = require("../models/gameSave");
 /**
  * Create gameSave in Database
  */
- router.post("/", function (req, res) {
+ router.post("/", (req, res) => {
     console.log(req.body.number);
     const data = new GameSave({
         _id: new mongoose.Types.ObjectId(),
@@ -15,11 +15,11 @@ const GameSave = require("../models/gameSave");
     });
     data
     .save()
-    .then( function (result) {
+    .then(result => {
         console.log(result);
         res.status(201).send("Saved data for user: " + result.number + " successfully");
     })
-    .catch( function(err) {
+    .catch( err => {
         console.log(err);
         res.status(500).json({
             error: err

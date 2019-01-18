@@ -5,7 +5,7 @@ const router = express.Router();
 /**
  * GET request for handling Twilio SMS requests
  */
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
     var kind = req.query.kind;
     // This will run every time you send a request to localhost:6969/index
     if (false) {
@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
             to: process.env.TO_NUMBER
         })
         .then(message => console.log(message.sid))
-        .catch(function(err) {
+        .catch(err => {
           console.log(err);
         });
         res.send("USER HAS BEEN NOTIFIED THAT THEY FLUSHED THE TOILET");

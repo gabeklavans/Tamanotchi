@@ -107,7 +107,7 @@ function initializeGame(data) {
         buttons = this.add.group();
         flush = this.add.image(30, 370, 'flush')
             .setDepth(2)
-            .setDisplaySize(30, 30)
+            .setDisplaySize(30, 30);
         buttons.add(flush);
         pixel = this.add.image(20, 20, 'pixel').setDisplaySize(1, 1).setDepth(2).setInteractive({ useHandCursor: true });
 

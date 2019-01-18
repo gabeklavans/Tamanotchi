@@ -49,7 +49,7 @@ app.use((req, res, next) => {
  */
 
 //serve the main app
-app.get("/", function(req, res) {
+app.get("/",(req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
@@ -57,7 +57,6 @@ app.get("/", function(req, res) {
 app.use("/twilio", twilioRouter);
 app.use("/mongo", mongoRouter);
 
-//TODO: Convert all callbacks to arrow-syntax
 //catch-all
 app.use((req, res, next) => {
   const error = new Error("Not found");
