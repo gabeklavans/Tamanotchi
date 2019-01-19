@@ -123,12 +123,7 @@ class Main extends Phaser.Scene {
 
     flush() {
         this.tama.anims.pause();
-        this.flushies = this.physics.add.sprite(28, 200, 'flushies')
-            .setCollideWorldBounds(true);
-        this.flushies.body.onWorldBounds = true;
-        this.flushies.body.immovable = true;
-        this.physics.add.collider(this.tama, this.flushies);
-        this.physics.add.collider(this.poops, this.flushies);
+        this.flushies.setVisible(true);
         this.physics.moveTo(this.flushies, 200, 200, 100);
 
         //sendSMS("BOI");
@@ -156,14 +151,20 @@ class Main extends Phaser.Scene {
         /* add base objects to scene */
         this.tama = this.physics.add.sprite(200, 200, 'sprite');
         this.poops = this.physics.add.group();
-        this.gun = this.add.image(1, 1, 'gun').setDisplaySize(40, 30).setVisible(false);
+        
 
-        /* define event listeners */
+        /* add remaining objects */
+        this.flushies = this.physics.add.sprite(28, 200, 'flushies').setCollideWorldBounds(true).setVisible(false);
+        this.flushies.body.immovable = true;
+        this.flushies.body.onWorldBounds = true;
+        this.gun = this.add.image(1, 1, 'gun').setDisplaySize(40, 30).setVisible(false);
 
         //move tama around on each animation frame
         this.tama.on('animationupdate', function () {
             this.setRandomPosition(90, 90, 220, 220);
         });
+
+        /* add listeners */
         //check for flushies end animation
         this.physics.world.on("worldbounds", () =>  {
             console.log("WORLD COLLIDED");
@@ -171,9 +172,13 @@ class Main extends Phaser.Scene {
             this.tama.setPosition(200);
             this.tama.anims.resume();
             this.poops.clear(true, true);
-            this.flushies.destroy();
+            this.flushies.setVisible(false).setPosition(28, 200);
             sceneUI.enableButtons();
         });
+
+        /* colliders */
+        this.physics.add.collider(this.tama, this.flushies);
+        this.physics.add.collider(this.poops, this.flushies);
 
         /* temp placement */
 
