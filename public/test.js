@@ -1,9 +1,8 @@
 class Main extends Phaser.Scene {
     constructor() {
         super("Main");
+        this.count = 0;
     }
-
-    count = 0;
 
     preload() {
         this.load.image('background', 'assets/Tama_Frame.png');
@@ -16,12 +15,12 @@ class Main extends Phaser.Scene {
 
     create() {
         this.bg = this.add.image(200, 200, 'background').setDepth(1);
-        var text = this.add.text("Count: 0");
+        this.info = this.add.text("Count: 0");
     }
 
     update() {
-        count ++;
-        text.setText("Count : " + count);
+        this.count ++;
+        this.info.setText("Count : " + this.count);
     }
 }
 
@@ -41,4 +40,8 @@ const config = {
         transparent: true
 }
 
-const game = Phaser.game(config);
+initialize(config);
+
+function initialize (config) {
+    const game = new Phaser.Game(config);
+}
