@@ -3,7 +3,6 @@ const debug = require('debug')('my-namespace');
 const name = 'my-app';
 debug('booting %s', name);
 
-var favicon = require('serve-favicon');
 var express = require('express');
 var app = express();
 var http = require('http');
@@ -76,11 +75,6 @@ app.use((error, req, res, next) => {
 });
 
 /* ~~~Server stuff~~~ */
-
-/**
- * Set favicon
- */
-app.use(favicon(path.join(__dirname, 'public', 'assets', 'favicon.ico')));
 
 /**
  * Get port from environment and store in Express.

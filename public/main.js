@@ -87,6 +87,7 @@ class UI extends Phaser.Scene {
         this.load.image('background', 'assets/Tama_Frame.png');
         this.load.image('pixel', 'assets/black.png');
         this.load.image('flushButton', 'assets/toilet.png');
+        this.load.image('burger', 'assets/burger.jpg');
     }
 
     create() {
@@ -96,10 +97,15 @@ class UI extends Phaser.Scene {
         /* add interface */
         this.bg = this.add.image(200, 200, 'background').setDepth(1);
         this.buttons = this.add.group();
-        this.flushButton = this.add.image(30, 370, 'flushButton')
+        //370
+        this.flushButton = this.add.image(200, 30, 'flushButton')
             .setDepth(2)
             .setDisplaySize(30, 30);
+        this.foodButton = this.add.image(120, 30, 'burger')
+            .setDepth(2)
+            .setDisplaySize(30,30);
         this.buttons.add(this.flushButton);
+        this.buttons.add(this.foodButton);
         this.pixel = this.add.image(20, 20, 'pixel').setDisplaySize(1, 1).setDepth(2).setInteractive({ useHandCursor: true });
  
         this.enableButtons();
@@ -110,7 +116,14 @@ class UI extends Phaser.Scene {
             sceneMain.flush();
         });
 
-        this.pixel.on('pointerdown', sceneMain.empower);
+        this.foodButton.on('pointerdown', () => {
+            this.disableButtons();
+            this.scene.add('eatCutscene', EatCutscene, true);
+        })
+
+        this.pixel.on('pointerdown', () => {
+            this.events.emit('empowered');
+        });
     }
 }
 
@@ -129,11 +142,6 @@ class Main extends Phaser.Scene {
         //sendSMS("BOI");
     }
 
-    empower() {
-        this.gun.setVisible(true);
-        console.log("u got a gun...");
-    }
-
     preload() {
         this.load.image('flushies', 'assets/flushies.png');
         this.load.image('poop', 'assets/poo.png');
@@ -143,6 +151,8 @@ class Main extends Phaser.Scene {
 
     create() {
         /* import UI scene */
+        //this.scene.add('UI', UI, true);
+
         const sceneUI = this.scene.get('UI');
 
         /* enable the right boundary to detect collisions */
@@ -175,12 +185,15 @@ class Main extends Phaser.Scene {
             this.flushies.setVisible(false).setPosition(28, 200);
             sceneUI.enableButtons();
         });
+        sceneUI.events.on('empowered', () => {
+            this.empower();
+        });
 
         /* colliders */
         this.physics.add.collider(this.tama, this.flushies);
         this.physics.add.collider(this.poops, this.flushies);
 
-        /* temp placement */
+        /* create animations */
 
         this.anims.create({
             key: 'idle',
@@ -188,6 +201,15 @@ class Main extends Phaser.Scene {
             frameRate: (1 / 3),
             repeat: -1
         });
+
+        this.anims.create({
+            key: 'eating',
+            frames: this.anims.generateFrameNumbers('sprite'),
+            frameRate: (2),
+            repeat: 3
+        });
+
+        /* temp */
 
         this.tama.anims.play('idle', true);
 
@@ -215,6 +237,46 @@ class Main extends Phaser.Scene {
 
         //debug
         this.progress.setText('Time (ms): ' + (currentTime.getTime() - this.gameStartTime.getTime()));
+    }
+
+    empower() {
+        this.gun.setVisible(true);
+        alert("Will gave u a gun...");
+    }
+}
+
+class EatCutscene extends Phaser.Scene {
+    constructor() {
+        super({key: 'eatCutscene'});
+    }
+
+    preload() {
+
+    }
+
+    create() {
+        /* import UI scene */
+        const sceneUI = this.scene.get('UI');
+
+        this.cameras.main.setBackgroundColor('#FFFFFF')
+        this.scene.moveDown();
+        
+        /* add objects + animations */
+        this.tama = this.physics.add.sprite(250, 200, 'sprite');
+        this.burger = this.add.image(150, 200, 'burger').setDisplaySize(30,30);
+        
+        this.tama.anims.play('eating', true);
+
+        /* listeners */
+        this.tama.on('animationcomplete', () => {
+            this.scene.remove('eatCutscene');
+            sceneUI.enableButtons();
+        });
+
+        this.tama.on('animationrepeat', () => {
+            let current = this.burger.alpha;
+            this.burger.setAlpha(current - 0.3);
+        });
     }
 }
 
