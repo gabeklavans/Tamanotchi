@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
 //serve the main app
 app.get("/", (req, res) => {
-	res.sendFile(path.join(__dirname, 'public', 'index.html'));
+	//res.sendFile(path.join(__dirname, 'part1.html'));
 });
 
 //internal Request routers

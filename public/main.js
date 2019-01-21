@@ -7,11 +7,11 @@ var body = document.getElementsByTagName("body")[0];
 body.appendChild(button);
 
 // 3. Add event handler
-button.addEventListener ("click", getTestData);
+button.addEventListener("click", getTestData);
 
-function createTestData () {
+function createTestData() {
     var testBody = {
-        "number" : "+14074084325"
+        "number": "+14074084325"
     }
 
     fetch('http://localhost:6969/mongo', {
@@ -21,8 +21,8 @@ function createTestData () {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(testBody)
-    }).then(function(res) {
-        res.text().then(function(text) {
+    }).then(function (res) {
+        res.text().then(function (text) {
             console.log(text);
         });
     });
@@ -30,14 +30,14 @@ function createTestData () {
 
 function getTestData() {
     var num = '5c3ef210005c3f570cc7ba56';
-    fetch('http://localhost:6969/mongo/'+num, {
+    fetch('http://localhost:6969/mongo/' + num, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    }).then( function(res) {
-        return res.json(); 
+    }).then(function (res) {
+        return res.json();
     }).then(doc => {
         alert("JK it won't be THAT easy to get my digits ;) But here's the game save ID: " + doc._id);
     });
@@ -68,7 +68,7 @@ function sendSMS(kind = "test data worked!") {
 
 class UI extends Phaser.Scene {
     constructor() {
-        super ({key: "UI", active: true});
+        super({ key: "UI", active: true });
     }
 
     enableButtons() {
@@ -88,6 +88,7 @@ class UI extends Phaser.Scene {
         this.load.image('pixel', 'assets/black.png');
         this.load.image('flushButton', 'assets/toilet.png');
         this.load.image('burger', 'assets/burger.jpg');
+        this.load.image('scale', 'assets/scale.png');
     }
 
     create() {
@@ -103,11 +104,15 @@ class UI extends Phaser.Scene {
             .setDisplaySize(30, 30);
         this.foodButton = this.add.image(120, 30, 'burger')
             .setDepth(2)
-            .setDisplaySize(30,30);
+            .setDisplaySize(30, 30);
+        this.healthButton = this.add.image(30, 30, 'scale')
+            .setDepth(2)
+            .setDisplaySize(30, 30);
         this.buttons.add(this.flushButton);
         this.buttons.add(this.foodButton);
+        this.buttons.add(this.healthButton);
         this.pixel = this.add.image(20, 20, 'pixel').setDisplaySize(1, 1).setDepth(2).setInteractive({ useHandCursor: true });
- 
+
         this.enableButtons();
 
         /* listeners for UI */
@@ -119,6 +124,11 @@ class UI extends Phaser.Scene {
         this.foodButton.on('pointerdown', () => {
             this.disableButtons();
             this.scene.add('eatCutscene', EatCutscene, true);
+        });
+
+        this.healthButton.on('pointerdown', () => {
+            this.disableButtons();
+            this.scene.add('hungHapScreen', HungHapScreen, true);
         })
 
         this.pixel.on('pointerdown', () => {
@@ -129,7 +139,7 @@ class UI extends Phaser.Scene {
 
 class Main extends Phaser.Scene {
     constructor() {
-        super({key: "Main"});
+        super({ key: "Main" });
         this.gameStartTime = new Date();
         this.nextPoopTime = getNextPoopTime();
     }
@@ -161,7 +171,7 @@ class Main extends Phaser.Scene {
         /* add base objects to scene */
         this.tama = this.physics.add.sprite(200, 200, 'sprite');
         this.poops = this.physics.add.group();
-        
+
 
         /* add remaining objects */
         this.flushies = this.physics.add.sprite(28, 200, 'flushies').setCollideWorldBounds(true).setVisible(false);
@@ -176,7 +186,7 @@ class Main extends Phaser.Scene {
 
         /* add listeners */
         //check for flushies end animation
-        this.physics.world.on("worldbounds", () =>  {
+        this.physics.world.on("worldbounds", () => {
             console.log("WORLD COLLIDED");
             this.tama.setVelocityX(0);
             this.tama.setPosition(200);
@@ -247,7 +257,7 @@ class Main extends Phaser.Scene {
 
 class EatCutscene extends Phaser.Scene {
     constructor() {
-        super({key: 'eatCutscene'});
+        super({ key: 'eatCutscene' });
     }
 
     preload() {
@@ -260,11 +270,11 @@ class EatCutscene extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor('#FFFFFF')
         this.scene.moveDown();
-        
+
         /* add objects + animations */
         this.tama = this.physics.add.sprite(250, 200, 'sprite');
-        this.burger = this.add.image(150, 200, 'burger').setDisplaySize(30,30);
-        
+        this.burger = this.add.image(150, 200, 'burger').setDisplaySize(30, 30);
+
         this.tama.anims.play('eating', true);
 
         /* listeners */
@@ -280,6 +290,56 @@ class EatCutscene extends Phaser.Scene {
     }
 }
 
+class HungHapScreen extends Phaser.Scene {
+    constructor() {
+        super({ key: "hungHapScreen" });
+    }
+
+    preload() {
+        this.load.spritesheet('heart', 'assets/heart.png', { frameWidth: 70, frameHeight: 70 });
+
+    }
+
+    create() {
+        /* import UI scene */
+        const sceneUI = this.scene.get('UI');
+
+        this.cameras.main.setBackgroundColor('#FFFFFF')
+        this.scene.moveDown();
+
+        this.hungerText = this.add.text(60, 60, "Back/Hunger", { color: "#000000", fontSize: "40px" })
+            .setInteractive({ useHandCursor: true });
+        this.row1 = this.add.group({
+            key: "heart",
+            frame: [0, 0, 1, 1],
+            setXY: {
+                x: 95,
+                y: 155,
+                stepX: 70
+            }
+        });
+        this.happyText = this.add.text(60, 200, "Next/Happy", { color: "#000000", fontSize: "40px" })
+            .setInteractive({ useHandCursor: true });
+        this.row2 = this.add.group({
+            key: "heart",
+            frame: [0, 1, 1, 1],
+            setXY: {
+                x: 95,
+                y: 295,
+                stepX: 70
+            }
+        });
+
+        /* listeners */
+        this.hungerText.on('pointerdown', () => {
+            sceneUI.enableButtons();
+            this.scene.remove('hungHapScreen');
+        });
+
+        //TODO add listener for training screen
+    }
+}
+
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
@@ -292,7 +352,7 @@ const config = {
             debug: false
         }
     },
-    scene: [ Main, UI ],
+    scene: [Main, UI],
     transparent: true
 };
 
