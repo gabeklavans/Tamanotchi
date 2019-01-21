@@ -129,6 +129,7 @@ class UI extends Phaser.Scene {
         this.healthButton.on('pointerdown', () => {
             this.disableButtons();
             this.scene.add('hungHapScreen', HungHapScreen, true);
+            this.scene.add('trainScreen', TrainScreen, false);
         })
 
         this.pixel.on('pointerdown', () => {
@@ -334,9 +335,40 @@ class HungHapScreen extends Phaser.Scene {
         this.hungerText.on('pointerdown', () => {
             sceneUI.enableButtons();
             this.scene.remove('hungHapScreen');
+            this.scene.remove('trainScreen');
+        });
+        this.happyText.on('pointerdown', () => {
+            this.scene.switch('trainScreen');
         });
 
         //TODO add listener for training screen
+    }
+}
+
+class TrainScreen extends Phaser.Scene {
+    constructor() {
+        super({ key: "trainScreen" });
+    }
+
+    preload() {
+        this.load.image('bar', 'assets/bar.png');
+    }
+
+    create() {
+        /* import UI scene */
+        const sceneUI = this.scene.get('UI');
+
+        this.cameras.main.setBackgroundColor('#FFFFFF');
+        this.scene.moveDown();
+
+        this.trainingText = this.add.text(60, 180, "Next/Training", { color: "#000000", fontSize: "40px" })
+            .setInteractive({ useHandCursor: true });
+        this.trainingBar = this.add.image(200, 230, 'bar');
+
+        /* listeners */
+        this.trainingText.on('pointerdown', () => {
+            this.scene.switch('hungHapScreen');
+        });
     }
 }
 
