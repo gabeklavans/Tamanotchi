@@ -8,6 +8,17 @@ var app = express();
 var http = require('http');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const concat = require("concat");
+
+/* Bundle JS files into one main file */
+concat(['./public/misc.js', 
+	'./public/main.js',
+	'./public/tama_eat.js',
+	'./public/tama_status.js',
+	'./public/init_game.js'],
+'./public/bundle.js')
+	.then(result => console.log("Successfully bundled into bundle.js"))
+	.catch(err => console.log(err));
 
 var twilioRouter = require('./routes/twilio');
 var mongoRouter = require('./routes/mongo');
@@ -84,6 +95,7 @@ app.set('port', port);
 
 /**
  * Normalize a port into a number, string, or false.
+ * Not sure why this is here, it was included in a tutorial so I left it in 🤷‍
  */
 function normalizePort(val) {
 	var port = parseInt(val, 10);
@@ -109,13 +121,8 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port);
-//server.on('error', onError);
-server.on('listening', onListening);
+server.listen(port, onListening);
 
-/**
- * Event listener for HTTP server "listening" event.
- */
 function onListening() {
 	var addr = server.address();
 	var bind = typeof addr === 'string'
