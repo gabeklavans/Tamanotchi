@@ -1,4 +1,4 @@
 {
-    "verbose": true,
-    "ignore": ["public\\bundle.js"]
+    "verbose": false,
+    "ignore": ["public/bundle.js"]
 }

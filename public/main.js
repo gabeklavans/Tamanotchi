@@ -62,6 +62,8 @@ class UI extends Phaser.Scene {
             this.disableButtons();
             this.scene.add('hungHapScreen', HungHapScreen, true);
             this.scene.add('trainScreen', TrainScreen, false);
+            this.scene.add('ageWeightNameScreen', AgeWeightNameScreen, false);
+            this.scene.add('sexGenerationScreen', SexGenerationScreen, false);
         })
 
         this.pixel.on('pointerdown', () => {
