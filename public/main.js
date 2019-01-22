@@ -104,7 +104,7 @@ class Main extends Phaser.Scene {
         this.physics.world.setBoundsCollision(false, true, false, false);
 
         /* add base objects to scene */
-        this.tama = this.physics.add.sprite(200, 200, 'sprite');
+        this.tama = this.physics.add.sprite(200, 200, 'sprite').setDisplaySize(90,90);
         this.poops = this.physics.add.group();
 
 
