@@ -11,7 +11,7 @@ class EatCutscene extends Phaser.Scene {
         /* import UI scene */
         const sceneUI = this.scene.get('UI');
 
-        this.cameras.main.setBackgroundColor('#000000');
+        this.cameras.main.setBackgroundColor('#FFFFFF');
         this.scene.moveDown();
 
         /* add objects + animations */
