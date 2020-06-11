@@ -44,17 +44,6 @@ function getTestData() {
 }
 
 /**
- * Returns a Date object of the new time
- */
-function getNextPoopTime() {
-    let date = moment();
-    let amount = Math.floor(Math.random() * 10);
-    console.log("Made next poop time " + amount + "min from now");
-    date.add(amount, 'm');
-    return date.toDate();
-}
-
-/**
  * Sends an SMS text using Twilio
  */
 function sendSMS(kind = "test data worked!") {

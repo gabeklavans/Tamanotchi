@@ -2,15 +2,7 @@ export default class Main extends Phaser.Scene {
     constructor() {
         super({ key: "Main" });
         this.gameStartTime = new Date();
-        this.nextPoopTime = getNextPoopTime();
-    }
-
-    flush() {
-        this.tama.anims.pause();
-        this.flushies.setVisible(true);
-        this.physics.moveTo(this.flushies, 200, 200, 100);
-
-        //sendSMS("BOI");
+        this.nextPoopTime = this.getNextPoopTime();
     }
 
     preload() {
@@ -30,7 +22,7 @@ export default class Main extends Phaser.Scene {
         this.physics.world.setBoundsCollision(false, true, false, false);
 
         /* add base objects to scene */
-        this.tama = this.physics.add.sprite(200, 200, 'sprite').setDisplaySize(90,90);
+        this.tama = this.physics.add.sprite(200, 200, 'sprite').setDisplaySize(90, 90);
         this.poops = this.physics.add.group();
 
 
@@ -93,13 +85,13 @@ export default class Main extends Phaser.Scene {
     }
 
     update() {
-        var currentTime = new Date();
+        let currentTime = new Date();
         if (this.nextPoopTime.getTime() - currentTime.getTime() <= 0) {
             //console.log(currentTime.getTime() - gameStartTime.getTime());
-            var poop = this.poops.create(200, 200, 'poop');
+            let poop = this.poops.create(200, 200, 'poop');
             poop.setRandomPosition(90, 90, 220, 220).setDisplaySize(50, 50);
             //this.poops.add(poop);
-            this.nextPoopTime = getNextPoopTime();
+            this.nextPoopTime = this.getNextPoopTime();
         }
 
         if (this.gun !== undefined) {
@@ -110,8 +102,26 @@ export default class Main extends Phaser.Scene {
         this.progress.setText('Time (ms): ' + (currentTime.getTime() - this.gameStartTime.getTime()));
     }
 
+    /* Run flush animation */
+    flush() {
+        this.tama.anims.pause();
+        this.flushies.setVisible(true);
+        this.physics.moveTo(this.flushies, 200, 200, 100);
+
+        //sendSMS("BOI");
+    }
+
     empower() {
         this.gun.setVisible(true);
         alert("Will gave u a gun...");
+    }
+
+    /* Returns a Date object of the new time */
+    getNextPoopTime() {
+        let date = moment();
+        let amount = Math.floor(Math.random() * 10);
+        console.log("Made next poop time " + amount + "min from now");
+        date.add(amount, 'm');
+        return date.toDate();
     }
 }
