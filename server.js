@@ -8,7 +8,6 @@ var app = express();
 var http = require('http');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const concat = require("concat");
 
 /* Bundle JS files into one main file */
 // concat(['./public/misc.js', 
