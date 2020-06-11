@@ -30,15 +30,15 @@ app.use(bodyParser.json());
 /**
  * Set up MongoDB Atlas client
  */
-mongoose.connect(
-	"mongodb+srv://the-mayor:" +
-	process.env.MONGO_ATLAS_PW +
-	"@tamanotchidb-6mz7m.gcp.mongodb.net/test?retryWrites=true",
-	{ useNewUrlParser: true }
-).catch(err => {
-	console.log(err);
-});
-mongoose.Promise = global.Promise;
+// mongoose.connect(
+// 	"mongodb+srv://the-mayor:" +
+// 	process.env.MONGO_ATLAS_PW +
+// 	"@tamanotchidb-6mz7m.gcp.mongodb.net/test?retryWrites=true",
+// 	{ useNewUrlParser: true }
+// ).catch(err => {
+// 	console.log(err);
+// });
+// mongoose.Promise = global.Promise;
 
 /**
  * Some CORS voo-doo stuff
