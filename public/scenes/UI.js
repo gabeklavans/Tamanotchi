@@ -1,3 +1,9 @@
+/* Import cutscenes */
+import EatCutscene from '../cutscenes/EatCutscene.js'
+
+/* Import screens */
+import StatusScreen from './SatusScreen.js'
+
 export default class UI extends Phaser.Scene {
     constructor() {
         super({ key: "UI", active: true });
@@ -48,24 +54,26 @@ export default class UI extends Phaser.Scene {
         this.enableButtons();
 
         /* listeners for UI */
+
+        // Clean up poo animation
         this.flushButton.on('pointerdown', () => {
             this.disableButtons();
             sceneMain.flush();
         });
 
+        // Play eat animation
         this.foodButton.on('pointerdown', () => {
             this.disableButtons();
             this.scene.add('eatCutscene', EatCutscene, true);
         });
 
+        // Activate health screen
         this.healthButton.on('pointerdown', () => {
             this.disableButtons();
-            this.scene.add('hungHapScreen', HungHapScreen, true);
-            this.scene.add('trainScreen', TrainScreen, false);
-            this.scene.add('ageWeightNameScreen', AgeWeightNameScreen, false);
-            this.scene.add('sexGenerationScreen', SexGenerationScreen, false);
+            this.scene.add('hungHapScreen', StatusScreen, true);
         })
 
+        // Resist
         this.pixel.on('pointerdown', () => {
             this.events.emit('empowered');
         });

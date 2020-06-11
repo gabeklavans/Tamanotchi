@@ -1,4 +1,4 @@
-class EatCutscene extends Phaser.Scene {
+export default class EatCutscene extends Phaser.Scene {
     constructor() {
         super({ key: 'eatCutscene' });
     }

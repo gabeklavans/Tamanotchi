@@ -1,11 +1,14 @@
-class HungHapScreen extends Phaser.Scene {
+export default class HungHapScreen extends Phaser.Scene {
     constructor() {
         super({ key: "hungHapScreen" });
     }
 
     preload() {
         this.load.spritesheet('heart', 'assets/heart.png', { frameWidth: 70, frameHeight: 70 });
-
+        
+        this.scene.add('trainScreen', TrainScreen, false);
+        this.scene.add('ageWeightNameScreen', AgeWeightNameScreen, false);
+        this.scene.add('sexGenerationScreen', SexGenerationScreen, false);
     }
 
     create() {
@@ -90,15 +93,15 @@ class AgeWeightNameScreen extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#FFFFFF');
         this.scene.moveDown();
 
-        this.tama = this.add.image(95, 95, 'burger').setDisplaySize(60,60);
+        this.tama = this.add.image(95, 95, 'burger').setDisplaySize(60, 60);
         this.ageText = this.add.text(150, 70, "Next/1 YR", { color: "#000000", fontSize: "32px" })
             .setInteractive({ useHandCursor: true });
 
         this.scale = this.add.image(95, 165, 'scale').setDisplaySize(60, 60);
         this.weightText = this.add.text(250, 140, "2 LB", { color: "#000000", fontSize: "32px" });
 
-        this.nameText = this.add.text(70, 200, "NAME", { color: "#000000", fontSize: "55px"});
-        this.name = this.add.text(200, 250, "GABE", { color: "#000000", fontSize: "55px"});
+        this.nameText = this.add.text(70, 200, "NAME", { color: "#000000", fontSize: "55px" });
+        this.name = this.add.text(200, 250, "GABE", { color: "#000000", fontSize: "55px" });
 
         /* listeners */
         this.ageText.on('pointerdown', () => {
@@ -121,10 +124,10 @@ class SexGenerationScreen extends Phaser.Scene {
 
         this.sexText = this.add.text(60, 60, "Next/SEX", { color: "#000000", fontSize: "55px" })
             .setInteractive({ useHandCursor: true });
-        this.sex = this.add.text(220, 130, "BOI", { color: "#000000", fontSize: "55px"});
+        this.sex = this.add.text(220, 130, "BOI", { color: "#000000", fontSize: "55px" });
 
         this.genText = this.add.text(60, 200, "GEN.", { color: "#000000", fontSize: "55px" });
-        this.gen = this.add.text(250, 270, "Z", { color: "#000000", fontSize: "55px"});
+        this.gen = this.add.text(250, 270, "Z", { color: "#000000", fontSize: "55px" });
 
         /* listeners */
         this.sexText.on('pointerdown', () => {
