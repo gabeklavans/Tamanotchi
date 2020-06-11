@@ -5,19 +5,9 @@ debug('booting %s', name);
 
 var express = require('express');
 var app = express();
-var http = require('http');
+const server = require('http').Server(app);
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
-/* Bundle JS files into one main file */
-// concat(['./public/misc.js', 
-// 	'./public/main.js',
-// 	'./public/tama_eat.js',
-// 	'./public/tama_status.js',
-// 	'./public/init_game.js'],
-// './public/bundle.js')
-// 	.then(result => console.log("Successfully bundled into bundle.js"))
-// 	.catch(err => console.log(err));
 
 var twilioRouter = require('./routes/twilio');
 var mongoRouter = require('./routes/mongo');
@@ -86,47 +76,11 @@ app.use((error, req, res, next) => {
 
 /* ~~~Server stuff~~~ */
 
-/**
- * Get port from environment and store in Express.
- */
-var port = normalizePort(process.env.PORT || '6969');
-app.set('port', port);
+/*  Get port from environment and store in Express. */
+const port = process.env.PORT || 6969;
 
-/**
- * Normalize a port into a number, string, or false.
- * Not sure why this is here, it was included in a tutorial so I left it in 🤷‍
- */
-function normalizePort(val) {
-	var port = parseInt(val, 10);
-
-	if (isNaN(port)) {
-		// named pipe
-		return val;
-	}
-
-	if (port >= 0) {
-		// port number
-		return port;
-	}
-
-	return false;
-}
-
-/**
- * Create HTTP server.
- */
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, onListening);
-
-function onListening() {
-	var addr = server.address();
-	var bind = typeof addr === 'string'
-		? 'pipe ' + addr
-		: 'port ' + addr.port;
-	//debug('Listening on ' + bind);
-	console.log('Listening on ' + bind);
-}
+/* Spin up server */
+server.listen(port, () => {
+	console.log(`Listening on ${server.address().port}`);
+	console.log(`Address should be: http://localhost:${server.address().port}`);
+});
