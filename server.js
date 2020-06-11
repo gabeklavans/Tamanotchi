@@ -11,14 +11,14 @@ const mongoose = require("mongoose");
 const concat = require("concat");
 
 /* Bundle JS files into one main file */
-concat(['./public/misc.js', 
-	'./public/main.js',
-	'./public/tama_eat.js',
-	'./public/tama_status.js',
-	'./public/init_game.js'],
-'./public/bundle.js')
-	.then(result => console.log("Successfully bundled into bundle.js"))
-	.catch(err => console.log(err));
+// concat(['./public/misc.js', 
+// 	'./public/main.js',
+// 	'./public/tama_eat.js',
+// 	'./public/tama_status.js',
+// 	'./public/init_game.js'],
+// './public/bundle.js')
+// 	.then(result => console.log("Successfully bundled into bundle.js"))
+// 	.catch(err => console.log(err));
 
 var twilioRouter = require('./routes/twilio');
 var mongoRouter = require('./routes/mongo');

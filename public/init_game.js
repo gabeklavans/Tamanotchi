@@ -1,6 +1,9 @@
+import UI from './scenes/UI.js'
+import Main from './scenes/Main.js'
+
 const config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
+    parent: 'phaser-canvas',
     width: 400,
     height: 400,
     physics: {
@@ -10,14 +13,9 @@ const config = {
             debug: false
         }
     },
+    // Scenes are prioritized in reverse order
     scene: [Main, UI],
     transparent: true
 };
 
-function initializeGame(config, data = "DEFAULT") {
-    console.log(data);
-
-    var game = new Phaser.Game(config);
-};
-
-initializeGame(config);
+const game = new Phaser.Game(config);
